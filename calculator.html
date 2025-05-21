@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grid Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #181818;
+      margin: 0;
+    }
+    .calculator {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      width: 300px;
+    }
+    .display {
+      background: #1e1e1e;
+      color: #0f0;
+      font-size: 2rem;
+      padding: 10px;
+      text-align: right;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      min-height: 50px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: #444;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #666;
+    }
+    .operator {
+      background-color: #ff9500;
+      color: black;
+    }
+    .clear {
+      background-color: #e74c3c;
+    }
+    .equal {
+      background-color: #2ecc71;
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <div class="display" id="display">0</div>
+  <div class="buttons">
+    <button class="clear">C</button>
+    <button class="operator">/</button>
+    <button class="operator">*</button>
+    <button class="operator">-</button>
+
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+    <button class="operator">+</button>
+
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>.</button>
+
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button class="equal">=</button>
+
+    <button style="grid-column: span 4;">0</button>
+  </div>
+</div>
+
+<script>
+  const display = document.getElementById('display');
+  const buttons = document.querySelectorAll('button');
+  let currentInput = '';
+  let resultDisplayed = false;
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const value = button.textContent;
+
+      if (value === 'C') {
+        currentInput = '';
+        display.textContent = '0';
+        resultDisplayed = false;
+      } else if (value === '=') {
+        try {
+          if (currentInput.trim() === '') return;
+          currentInput = eval(currentInput).toString();
+          display.textContent = currentInput;
+          resultDisplayed = true;
+        } catch {
+          display.textContent = 'Error';
+          currentInput = '';
+        }
+      } else {
+        if (resultDisplayed && !isNaN(value)) {
+          currentInput = value;
+          resultDisplayed = false;
+        } else {
+          currentInput += value;
+        }
+        display.textContent = currentInput;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
